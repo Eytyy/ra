@@ -9,7 +9,8 @@ import { useMutation } from '@tanstack/react-query';
 import uploadToDropbox from '@/lib/dropbox';
 import { useLayout } from '@/context/layout';
 import { updateTags } from '@/lib/utils';
-import { getFilePath } from '@/lib/helpers';
+import { getDateStamp, getFilePath } from '@/lib/helpers';
+import UploadMessage from './UploadMessage';
 
 type EventsResponse = {
   result: {
@@ -40,10 +41,14 @@ function Main({ data }: { data: EventProps[] }) {
       const title = formData.get('title') as string;
       const artist = formData.get('artist') as string;
 
+      const dateStamp = getDateStamp(date);
+
+      // create new file with updated tags
       const updatedFile = await updateTags({
         file,
         title,
         artist,
+        dateStamp,
       });
       const path = getFilePath(file.name, date);
       upload({ file: updatedFile, path });
@@ -55,6 +60,7 @@ function Main({ data }: { data: EventProps[] }) {
     setSelected(event);
   }, []);
 
+  // handle upload errors and success
   useEffect(() => {
     if (isUploadError) {
       setSelected(null);
@@ -87,10 +93,12 @@ function Main({ data }: { data: EventProps[] }) {
     };
   }, [isUploadSuccess]);
 
+  // show loading indicator while uploading
   if (isUploading) {
     return <LoadingShows />;
   }
 
+  // show list of shows or selected show
   const placeBelowHeader = isListOpen || selected;
   const showSelected = selected?.id && !isListOpen;
 
@@ -110,29 +118,10 @@ function Main({ data }: { data: EventProps[] }) {
             <RadioShow id={selected.id!} submit={submit} />
           )}
         </div>
-        {message && <Message message={message} />}
+        {message && <UploadMessage message={message} />}
       </div>
     </>
   );
 }
 
 export default Main;
-
-function Message({ message }: { message: string }) {
-  switch (message) {
-    case 'upload error':
-      return (
-        <div className="absolute -bottom-20 left-0 right-0 bg-[#FF0000] text-[#FFFFFF] text-center py-2">
-          <p>Upload failed. Please try again.</p>
-        </div>
-      );
-    case 'upload success':
-      return (
-        <div className="absolute -bottom-20 left-0 right-0 bg-[#00FF00] text-[#FFFFFF] text-center py-2">
-          <p>Upload successful!</p>
-        </div>
-      );
-    default:
-      return null;
-  }
-}
