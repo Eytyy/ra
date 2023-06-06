@@ -1,6 +1,11 @@
 import { kv } from '@vercel/kv';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+// https://www.dropboxforum.com/t5/Dropbox-API-Support-Feedback/Issue-in-generating-access-token/td-p/592667/highlight/true
+// I'm not using the dropbox sdk to avoid redirecting to dropbox login page to get access token
+// Instead I'm using the oauth2/token endpoint to generate a new access token manually using the refresh token
+// maybe this needs to be updated in the future
+
 export default async function generateToken(
   req: NextApiRequest,
   res: NextApiResponse

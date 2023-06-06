@@ -43,8 +43,8 @@ const uploadToDropbox = async ({ file, path }: Props) => {
   if (!accessToken) {
     accessToken = await generateNewToken();
   }
-  console.log(accessToken);
 
+  // try to upload with current access token first
   try {
     const response = await upload({
       file,
@@ -53,6 +53,7 @@ const uploadToDropbox = async ({ file, path }: Props) => {
     });
     return response;
   } catch (error: any) {
+    // if access token expired, generate new token and retry upload
     if (error.status && error.status === 401) {
       const newAccessToken = await generateNewToken();
       console.log(
@@ -67,6 +68,7 @@ const uploadToDropbox = async ({ file, path }: Props) => {
 
       return response;
     } else {
+      // if error is not 401, throw error
       console.log(error);
       throw error;
     }
