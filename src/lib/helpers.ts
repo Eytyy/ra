@@ -1,5 +1,3 @@
-import * as NodeID3 from 'node-id3'; // Import node-id3 library
-
 export const formatSize = (sizeInBytes: number) => {
   const KB = 1024;
   const MB = KB * 1024;
