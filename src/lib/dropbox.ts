@@ -2,12 +2,14 @@ import { Dropbox } from 'dropbox';
 
 export const getToken = async (): Promise<string | undefined> => {
   const response: any = await fetch('/api/get-token');
-  return response.data.accessToken;
+  const data = await response.json();
+  return data.accessToken;
 };
 
 export const generateNewToken = async (): Promise<string> => {
   const response: any = await fetch('/api/generate-token');
-  return response.data.accessToken;
+  const data = await response.json();
+  return data.accessToken;
 };
 
 type UploadProps = {
@@ -41,6 +43,7 @@ const uploadToDropbox = async ({ file, path }: Props) => {
   if (!accessToken) {
     accessToken = await generateNewToken();
   }
+  console.log(accessToken);
 
   try {
     const response = await upload({
