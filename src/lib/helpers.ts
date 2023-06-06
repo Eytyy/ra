@@ -42,7 +42,14 @@ export const readFileAsArrayBuffer = (file: File) => {
   });
 };
 
-// 2023/1 Mar 2023/04032023/fileName
+export const getDateStamp = (date: string) => {
+  const d = new Date(date);
+  const stamp =
+    `${(d.getMonth() + 1).toString().padStart(2, '0')}` +
+    `${d.getDate().toString().padStart(2, '0')}` +
+    `${d.getFullYear()}`;
+  return stamp;
+};
 
 export const getFilePath = (fileName: string, date: string) => {
   const formattedDate = new Date(date);
@@ -50,14 +57,17 @@ export const getFilePath = (fileName: string, date: string) => {
     month: 'long',
   });
   const monthNumber = formattedDate.getMonth() + 1;
-  const year = formattedDate.getFullYear();
-  const day = formattedDate.getDate();
+  const day = formattedDate.getDate().toString().padStart(2, '0');
 
-  const dateString =
-    `${monthNumber.toString().padStart(2, '0')}` +
-    `${day.toString().padStart(2, '0')}` +
-    `${year}`;
-  const path = `/${formattedDate.getFullYear()}/${monthNumber} ${monthFull} ${year}/${dateString}/${fileName}`;
+  const dateStamp = getDateStamp(date);
+  // /year/month monthFull/day/dateStamp_fileName
+  const path = `/${formattedDate.getFullYear()}/${monthNumber} ${monthFull}/${day}/${dateStamp}_${fileName}`;
 
   return path;
+};
+
+export const removeSpecialCharacters = (str: string) => {
+  var regex = /[!@#$%^&*(),.?":{}|<>]/g;
+  var result = str.replace(regex, '');
+  return result;
 };

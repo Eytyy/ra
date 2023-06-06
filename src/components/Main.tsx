@@ -41,14 +41,11 @@ function Main({ data }: { data: EventProps[] }) {
       const title = formData.get('title') as string;
       const artist = formData.get('artist') as string;
 
-      const dateStamp = getDateStamp(date);
-
       // create new file with updated tags
       const updatedFile = await updateTags({
         file,
         title,
         artist,
-        dateStamp,
       });
       const path = getFilePath(file.name, date);
       upload({ file: updatedFile, path });
