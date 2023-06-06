@@ -136,7 +136,7 @@ export default function Shows({ update, events }: Props) {
       </div>
 
       {visible && (
-        <div className="space-y-6">
+        <div className="space-y-6 mt-4">
           {Object.entries(resultsByDate).map(([date, events]) => (
             <div key={date} className="space-y-2">
               <h3 className="text-xl text-gray-400">
