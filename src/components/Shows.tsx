@@ -25,8 +25,8 @@ export default function Shows({ update, events }: Props) {
     setVisible(!visible);
     toggleList(!visible);
   };
-  // TODO: order by date and name to make sure later events are the ones that are removed
-  // Order calendr events by name and remove duplicates
+
+  // Order calendr events by date and remove duplicates
   const eventsByName = useMemo(() => {
     const sorted = events
       // remove events without a summary or start date

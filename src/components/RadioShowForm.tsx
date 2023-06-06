@@ -41,8 +41,8 @@ export default function RadioShowForm({
 
     const formData = new FormData();
     formData.append('file', form.file);
-    formData.append('title', form.title.toUpperCase());
-    formData.append('artist', `[${artist.toUpperCase()}]`);
+    formData.append('title', form.title);
+    formData.append('artist', artist);
     formData.append('date', event.start.dateTime);
     submit(formData);
   }
