@@ -29,8 +29,8 @@ export default async function generateToken(
       body: formData,
     });
     const data = await reponse.json();
-    // kv.set('dropbox_access_token', data.access_token);
-    console.log(data);
+    kv.set('dropbox_access_token', data.access_token);
+
     res.status(200).json({
       accessToken: data.access_token,
     });

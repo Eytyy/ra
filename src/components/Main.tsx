@@ -23,7 +23,6 @@ function Main({ data }: { data: EventProps[] }) {
   const [selected, setSelected] = useState<EventProps | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const to = useRef<NodeJS.Timeout | null>(null);
-  const mounted = useRef<boolean>(false);
 
   const { isListOpen } = useLayout();
 
@@ -33,17 +32,6 @@ function Main({ data }: { data: EventProps[] }) {
     isError: isUploadError,
     isSuccess: isUploadSuccess,
   } = useMutation(uploadToDropbox);
-
-  useEffect(() => {
-    async function getToken() {
-      const response = await fetch('/api/generate-token');
-      console.log(response);
-    }
-    if (!mounted.current) {
-      getToken();
-      mounted.current = true;
-    }
-  }, []);
 
   const submit = useCallback(
     async (formData: FormData) => {
