@@ -28,17 +28,20 @@ export default function Shows({ update, events }: Props) {
   // TODO: order by date and name to make sure later events are the ones that are removed
   // Order calendr events by name and remove duplicates
   const eventsByName = useMemo(() => {
-    // sort by name
     const sorted = events
+      // remove events without a summary or start date
       .filter((event) => {
-        if (!event.summary) return false;
+        if (!event.summary || !event.start?.dateTime) return false;
         return event.summary.trim() !== '';
       })
-      .sort((a, b) =>
-        a.summary!.localeCompare(b.summary!, undefined, {
-          sensitivity: 'base',
-        })
-      );
+      // sort by date
+      .sort((a, b) => {
+        const dateA = a.start?.dateTime as string;
+        const dateB = b.start?.dateTime as string;
+        if (dateA < dateB) return -1;
+        if (dateA > dateB) return 1;
+        return 0;
+      });
     // return only unique events
     return sorted.filter(
       (event, index, self) =>
