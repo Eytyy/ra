@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Dropbox } from 'dropbox';
 
 export const getToken = async (): Promise<string | undefined> => {

@@ -24,7 +24,7 @@ type EventsResponse = {
 type EventProps = EventsResponse['result']['data'];
 
 function Main({ data }: { data: EventProps[] }) {
-  const [progress, setProgress] = useState<null | 0>(null);
+  const [progress, setProgress] = useState<null | number>(null);
   const [progressAnimating, setProgressAnimating] = useState(false);
   const [selected, setSelected] = useState<EventProps | null>(null);
   const { isListOpen } = useLayout();
