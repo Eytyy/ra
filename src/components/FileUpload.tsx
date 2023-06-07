@@ -67,13 +67,15 @@ export default function FileUpload({ updateFile }: Props) {
         onChange={handleChange}
         className="hidden"
       />
-      <button
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
         type="button"
         className="border-[1px] px-6 py-2 rounded-[2.5rem]"
         onClick={onClickUpload}
       >
         ADD
-      </button>
+      </motion.button>
       <p className="text-sm">or drag and drop your audio file here</p>
     </motion.div>
   );

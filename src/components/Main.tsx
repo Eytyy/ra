@@ -9,7 +9,10 @@ import uploadToDropbox from '@/lib/dropbox';
 import { useLayout } from '@/context/layout';
 import { updateTags } from '@/lib/utils';
 import { getFilePath } from '@/lib/helpers';
-import UploadProgress from './UploadProgress';
+import UploadProgress, {
+  CompletionView,
+  InitialView,
+} from './UploadProgress';
 import { AnimatePresence, motion } from 'framer-motion';
 
 type EventsResponse = {
@@ -106,16 +109,13 @@ function Main({ data }: { data: EventProps[] }) {
           </AnimatePresence>
         </motion.div>
       ) : (
-        <motion.div
+        <div
           className={clsx(
             'flex justify-center w-full max-w-lg px-8 relative',
             'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
             placeBelowHeader &&
               'top-[calc(var(--header-height)+4rem)] translate-y-0 max-h-[calc(100vh-var(--header-height)-10rem)]'
           )}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
         >
           <div className="border-[1px] border-[#9F9F9F] rounded-[2.5rem] p-8 w-full space-y-6">
             <Shows update={updateSelected} events={data} />
@@ -123,7 +123,7 @@ function Main({ data }: { data: EventProps[] }) {
               <RadioShow id={selected.id!} submit={submit} />
             )}
           </div>
-        </motion.div>
+        </div>
       )}
     </AnimatePresence>
   );

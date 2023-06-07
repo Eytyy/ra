@@ -120,7 +120,7 @@ function ProgressView({
   );
 }
 
-function CompletionView({
+export function CompletionView({
   type,
   reset,
 }: {
@@ -136,8 +136,20 @@ function CompletionView({
 
   return (
     <motion.div initial={{ opacity: 1 }} animate={{ opacity: 1 }}>
-      {type === 'error' && <div>Upload error</div>}
-      {type === 'success' && <div>Upload success</div>}
+      {type === 'error' && (
+        <div className="text-center space-y-4">
+          <div className="text-9xl">😭</div>
+          <div className="text-sm">
+            Upload Failed. Pleast try again!
+          </div>
+        </div>
+      )}
+
+      {type === 'success' && (
+        <div className="text-center space-y-4">
+          <div className="text-9xl">🕺🏻</div>
+        </div>
+      )}
     </motion.div>
   );
 }
@@ -164,21 +176,24 @@ const loadingVariants = {
   },
 };
 
-function InitialView() {
+export function InitialView() {
   return (
-    <motion.div
-      variants={loadingVariants}
-      initial="initial"
-      animate="animate"
-    >
-      <svg width={300} height={300} viewBox="0 0 85 85" fill="none">
-        <motion.path
-          fill="none"
-          d="M24.0541 84C17.2452 84 11.4679 81.8114 7.34132 77.6821C4.28763 74.6264 2.30686 70.7035 1.44027 66.1199C0.614953 61.495 0.945082 56.292 2.47193 50.6761C5.23675 40.4766 11.7568 29.8642 20.7941 20.8209C29.8313 11.7776 40.4367 5.25323 50.6294 2.48656C54.2196 1.49552 57.6859 1 60.9459 1C67.7548 1 73.4908 3.18855 77.6587 7.31791C80.7124 10.3736 82.6931 14.2965 83.5597 18.8801C84.385 23.505 84.0549 28.708 82.5281 34.3239C79.7632 44.5234 73.2432 55.1358 64.2059 64.1791C55.1687 73.2224 44.5633 79.7468 34.3706 82.5134C30.7392 83.5045 27.2728 84 24.0541 84Z"
-          stroke="white"
-        />
-      </svg>
-    </motion.div>
+    <div>
+      <motion.div
+        variants={loadingVariants}
+        initial="initial"
+        animate="animate"
+      >
+        <svg width={300} height={300} viewBox="0 0 85 85" fill="none">
+          <motion.path
+            fill="none"
+            d="M24.0541 84C17.2452 84 11.4679 81.8114 7.34132 77.6821C4.28763 74.6264 2.30686 70.7035 1.44027 66.1199C0.614953 61.495 0.945082 56.292 2.47193 50.6761C5.23675 40.4766 11.7568 29.8642 20.7941 20.8209C29.8313 11.7776 40.4367 5.25323 50.6294 2.48656C54.2196 1.49552 57.6859 1 60.9459 1C67.7548 1 73.4908 3.18855 77.6587 7.31791C80.7124 10.3736 82.6931 14.2965 83.5597 18.8801C84.385 23.505 84.0549 28.708 82.5281 34.3239C79.7632 44.5234 73.2432 55.1358 64.2059 64.1791C55.1687 73.2224 44.5633 79.7468 34.3706 82.5134C30.7392 83.5045 27.2728 84 24.0541 84Z"
+            stroke="white"
+          />
+        </svg>
+      </motion.div>
+      <div className="absolute text-sm w-[300px] text-center">🛸</div>
+    </div>
   );
 }
 

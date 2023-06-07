@@ -2,6 +2,7 @@ import { useState } from 'react';
 import FileUpload from './FileUpload';
 import { formatSize } from '../lib/helpers';
 import { calendar_v3 } from 'googleapis';
+import { motion } from 'framer-motion';
 
 type StateProps = {
   title: string;
@@ -85,9 +86,13 @@ export default function RadioShowForm({
         )}
       </div>
       <div>
-        <button className="p-4 border-[1px] w-full rounded-full">
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="p-4 border-[1px] w-full rounded-full"
+        >
           SEND
-        </button>
+        </motion.button>
       </div>
     </form>
   );
