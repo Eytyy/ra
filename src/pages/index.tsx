@@ -4,6 +4,7 @@ import Header from '@/components/Header';
 import Main from '@/components/Main';
 import { calendar_v3, google } from 'googleapis';
 import { DateTime } from 'luxon';
+import Head from 'next/head';
 
 type CalendarEvent = calendar_v3.Schema$Event;
 type CalendarEvents = { items?: CalendarEvent[] };
@@ -21,6 +22,9 @@ export default function Home({ events }: { events: CalendarEvents }) {
 
   return (
     <div className={inter.className}>
+      <Head>
+        <title>RA</title>
+      </Head>
       <div className="bg-black h-screen text-white items-center gap-14 text-xl md:p-16 p-8">
         <Header />
         <Main data={events.items} />
