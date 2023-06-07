@@ -18,6 +18,7 @@ export default function Home({ events }: { events: CalendarEvents }) {
   if (!events.items) {
     return <div>no events</div>;
   }
+
   return (
     <div className={inter.className}>
       <div className="bg-black h-screen text-white items-center gap-14 text-xl md:p-16 p-8">

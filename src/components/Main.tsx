@@ -1,16 +1,16 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 import type { calendar_v3 } from 'googleapis';
 import Shows from './Shows';
 import RadioShow from './RadioShow';
-import LoadingShows from './LoadingShows';
 import clsx from 'clsx';
 import { useMutation } from '@tanstack/react-query';
 
 import uploadToDropbox from '@/lib/dropbox';
 import { useLayout } from '@/context/layout';
 import { updateTags } from '@/lib/utils';
-import { getDateStamp, getFilePath } from '@/lib/helpers';
-import UploadMessage from './UploadMessage';
+import { getFilePath } from '@/lib/helpers';
+import UploadProgress from './UploadProgress';
+import { AnimatePresence, motion } from 'framer-motion';
 
 type EventsResponse = {
   result: {
@@ -21,18 +21,35 @@ type EventsResponse = {
 type EventProps = EventsResponse['result']['data'];
 
 function Main({ data }: { data: EventProps[] }) {
+  const [progress, setProgress] = useState<null | 0>(null);
+  const [progressAnimating, setProgressAnimating] = useState(false);
   const [selected, setSelected] = useState<EventProps | null>(null);
-  const [message, setMessage] = useState<string | null>(null);
-  const to = useRef<NodeJS.Timeout | null>(null);
-
   const { isListOpen } = useLayout();
+
+  const updateSelected = useCallback((event: EventProps) => {
+    setSelected(event);
+  }, []);
 
   const {
     mutate: upload,
-    isLoading: isUploading,
-    isError: isUploadError,
-    isSuccess: isUploadSuccess,
+    isLoading,
+    isError,
+    isSuccess,
+    reset,
   } = useMutation(uploadToDropbox);
+
+  const uploadProgressCb = useCallback(
+    (progress: number) => {
+      setProgress(progress);
+    },
+    [setProgress]
+  );
+
+  const resetApp = useCallback(() => {
+    reset();
+    setProgress(null);
+    setSelected(null);
+  }, [reset, setProgress]);
 
   const submit = useCallback(
     async (formData: FormData) => {
@@ -48,76 +65,67 @@ function Main({ data }: { data: EventProps[] }) {
         artist,
       });
       const path = getFilePath(file.name, date);
-      upload({ file: updatedFile, path });
+      upload({ file: updatedFile, path, cb: uploadProgressCb });
     },
-    [upload]
+    [upload, uploadProgressCb]
   );
 
-  const updateSelected = useCallback((event: EventProps) => {
-    setSelected(event);
-  }, []);
-
-  // handle upload errors and success
-  useEffect(() => {
-    if (isUploadError) {
-      setSelected(null);
-      setMessage('upload error');
-      to.current = setTimeout(() => {
-        setMessage(null);
-      }, 3000);
-    }
-    return () => {
-      if (to.current) {
-        clearTimeout(to.current);
-      }
-      setMessage(null);
-    };
-  }, [isUploadError]);
-
-  useEffect(() => {
-    if (isUploadSuccess) {
-      setSelected(null);
-      setMessage('upload success');
-      to.current = setTimeout(() => {
-        setMessage(null);
-      }, 3000);
-    }
-    return () => {
-      if (to.current) {
-        clearTimeout(to.current);
-      }
-      setMessage(null);
-    };
-  }, [isUploadSuccess]);
-
-  // show loading indicator while uploading
-  if (isUploading) {
-    return <LoadingShows />;
-  }
+  const isUploading = isLoading || progressAnimating;
+  const isDone = (isSuccess || isError) && !isUploading;
+  const showLoadingState = isUploading || isDone;
 
   // show list of shows or selected show
   const placeBelowHeader = isListOpen || selected;
   const showSelected = selected?.id && !isListOpen;
 
+  const animationKey = isUploading
+    ? progress !== null
+      ? 'progress'
+      : 'initiated'
+    : 'done';
+
   return (
-    <>
-      <div
-        className={clsx(
-          'flex justify-center w-full max-w-lg px-8 relative',
-          'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
-          placeBelowHeader &&
-            'top-[calc(var(--header-height)+4rem)] translate-y-0 max-h-[calc(100vh-var(--header-height)-10rem)]'
-        )}
-      >
-        <div className="border-[1px] border-[#9F9F9F] rounded-[2.5rem] p-8 w-full space-y-6">
-          <Shows update={updateSelected} events={data} />
-          {showSelected && (
-            <RadioShow id={selected.id!} submit={submit} />
+    <AnimatePresence mode="wait">
+      {showLoadingState ? (
+        <motion.div
+          className="fixed left-0 top-0 p-12 w-full h-full flex flex-col items-center justify-center bg-black"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 20 }}
+        >
+          <AnimatePresence mode="wait">
+            <UploadProgress
+              key={animationKey}
+              isUploading={isUploading}
+              isDone={isDone}
+              isError={isError}
+              progress={progress}
+              setProgressAnimating={setProgressAnimating}
+              reset={resetApp}
+            />
+          </AnimatePresence>
+        </motion.div>
+      ) : (
+        <motion.div
+          className={clsx(
+            'flex justify-center w-full max-w-lg px-8 relative',
+            'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
+            placeBelowHeader &&
+              'top-[calc(var(--header-height)+4rem)] translate-y-0 max-h-[calc(100vh-var(--header-height)-10rem)]'
           )}
-        </div>
-        {message && <UploadMessage message={message} />}
-      </div>
-    </>
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <div className="border-[1px] border-[#9F9F9F] rounded-[2.5rem] p-8 w-full space-y-6">
+            <Shows update={updateSelected} events={data} />
+            {showSelected && (
+              <RadioShow id={selected.id!} submit={submit} />
+            )}
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
 

@@ -27,14 +27,9 @@ const loadingVariants = {
   },
 };
 
-export default function LoadingShows({ progress }: Props) {
+export default function LoadingShows() {
   return (
-    <div className="bg-black h-screen text-white gap-4 text-xl md:p-16 p-8 flex flex-col items-center justify-center fixed top-0 left-0 w-full h-full">
-      {progress !== undefined && (
-        <div className="font-bold w-[300px] text-left">
-          {progress}%
-        </div>
-      )}
+    <div className="bg-black text-white gap-4 text-xl md:p-16 p-8 flex flex-col items-center justify-center fixed top-0 left-0 w-full h-full">
       <motion.div
         variants={loadingVariants}
         initial="initial"

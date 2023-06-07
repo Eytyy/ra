@@ -116,7 +116,7 @@ export default function Shows({ update, events }: Props) {
       >
         <motion.button
           onClick={toggle}
-          className="form-element text-xl flex justify-between items-center"
+          className="form-element text-xl flex justify-between gap-2 items-center"
         >
           {selected ? (
             <span className="uppercase w-full">{`${selected.summary}`}</span>
@@ -127,7 +127,7 @@ export default function Shows({ update, events }: Props) {
         </motion.button>
         {visible && (
           <input
-            className="w-full h-10 p-[1rem] bg-[#111010] rounded-full text-center uppercase"
+            className="w-full rounded-full uppercase form-element outline-none"
             value={value}
             onChange={handleChange}
             placeholder="SEARCH"
@@ -136,7 +136,7 @@ export default function Shows({ update, events }: Props) {
       </div>
 
       {visible && (
-        <div className="space-y-6 mt-4">
+        <div className="space-y-8 mt-4">
           {Object.entries(resultsByDate).map(([date, events]) => (
             <div key={date} className="space-y-2">
               <h3 className="text-xl text-gray-400">
