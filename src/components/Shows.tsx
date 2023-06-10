@@ -122,7 +122,7 @@ export default function Shows({ update, events }: Props) {
       >
         <motion.button
           onClick={toggle}
-          className="form-element flex justify-between gap-2 items-center"
+          className="form-element  flex justify-between gap-2 items-center"
         >
           {selected ? (
             <span className="uppercase w-full">{`${selectedText}`}</span>

@@ -80,7 +80,7 @@ export default function RadioShowForm({
       className="gap-8 grid grid-rows[auto_min-content]"
       onSubmit={handleSubmit}
     >
-      <div className="space-y-6 md:space-x-8">
+      <div className="space-y-8">
         <div>
           <input
             name="name"

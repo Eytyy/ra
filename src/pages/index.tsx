@@ -25,7 +25,7 @@ export default function Home({ events }: { events: CalendarEvents }) {
       <Head>
         <title>RA</title>
       </Head>
-      <div className="bg-black h-screen text-white items-center gap-14 text-base md:text-xl md:p-16 p-8">
+      <div className="bg-black h-screen text-white items-center gap-14 text-xl md:p-16 p-8">
         <Header />
         <Main data={events.items} />
       </div>
