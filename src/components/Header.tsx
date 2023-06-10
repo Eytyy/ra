@@ -22,7 +22,7 @@ export default function Header() {
       className="flex flex-col items-center justify-center text-center gap-2 md:gap-4 md:fixed md:max-w-lg md:top-16 md:left-1/2 md:mx-auto md:-translate-x-1/2"
     >
       <Logo />
-      <div className="hidden md:visible">
+      <div className="hidden md:block">
         <h1>Radio Alhara</h1>
         <h2>MIX Uploader</h2>
       </div>
