@@ -57,7 +57,7 @@ export default function RadioShowForm({
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const errors = validate(form.file, form.title);
+    const errors = validate();
     if (Object.keys(errors).length) {
       return;
     }
