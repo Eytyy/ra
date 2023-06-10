@@ -29,9 +29,7 @@ export default function RadioShowForm({
   const validate = useCallback(() => {
     const { file, title } = form;
     const errors: { [key: string]: string } = {};
-    if (!dirty) {
-      return errors;
-    }
+
     if (!file) {
       errors['file'] = 'File is required';
     }
@@ -47,7 +45,7 @@ export default function RadioShowForm({
     }
     setErrors(errors);
     return errors;
-  }, [form, dirty]);
+  }, [form]);
 
   const updateFile = (file: File) => {
     setDirty(true);
@@ -56,15 +54,17 @@ export default function RadioShowForm({
   const removeFile = () => setForm({ ...form, file: null });
 
   useEffect(() => {
-    validate();
-  }, [form, validate]);
+    if (dirty) {
+      validate();
+    }
+  }, [form, validate, dirty]);
 
   // Append form data and upload to server
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     const errors = validate();
-    if (Object.keys(errors).length || !dirty) {
+    if (Object.keys(errors).length) {
       return;
     }
 

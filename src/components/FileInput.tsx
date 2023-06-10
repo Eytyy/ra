@@ -1,4 +1,3 @@
-import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import clsx from 'clsx';
 import useFileDnD from '@/hooks/useFileDnd';
