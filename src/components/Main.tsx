@@ -111,7 +111,7 @@ function Main({ data }: { data: EventProps[] }) {
       ) : (
         <div
           className={clsx(
-            'flex justify-center w-full max-w-lg px-8 relative',
+            'flex justify-center w-full max-w-md relative',
             'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
             placeBelowHeader &&
               'top-[calc(var(--header-height)+4rem)] translate-y-0 max-h-[calc(100vh-var(--header-height)-10rem)]'

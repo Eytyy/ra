@@ -1,8 +1,15 @@
+import clsx from 'clsx';
+
 export default function Logo({ big = false }) {
   return (
     <svg
-      width={big ? '300' : '85'}
-      height={big ? '300' : '85'}
+      className={clsx(
+        big
+          ? 'w-[300px] h-[300px]'
+          : 'w-14 h-14  md:w-[85px] h-[85px]'
+      )}
+      width={85}
+      height={85}
       viewBox="0 0 85 85"
       fill="none"
     >
