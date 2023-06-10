@@ -111,16 +111,17 @@ function Main({ data }: { data: EventProps[] }) {
       ) : (
         <div
           className={clsx(
-            'flex justify-center w-full max-w-md relative',
-            'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
-            placeBelowHeader &&
-              'top-[calc(var(--header-height)+4rem)] translate-y-0 max-h-[calc(100vh-var(--header-height)-10rem)]'
+            'flex justify-center w-full max-w-md',
+            isListOpen && 'max-h-[calc(100vh-8rem)]',
+            placeBelowHeader
+              ? 'relative pt-8 md:pt-0 md:fixed md:top-[calc(var(--header-height)+8rem)] md:left-1/2 md:-translate-x-1/2 md:max-h-[calc(100vh-var(--header-height)-10rem)]'
+              : 'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
           )}
         >
           <div
             className={clsx(
-              'border-[1px] border-[#9F9F9F] w-full space-y-6 md:text-lg',
-              showSelected
+              'border-[1px] border-[#9F9F9F] w-full space-y-6 md:text-lg transition-all duration-500 ease-in-out',
+              placeBelowHeader
                 ? 'rounded-[2rem] p-8'
                 : 'rounded-[2rem] p-6 md:p-8 md:rounded-[2.5rem]'
             )}

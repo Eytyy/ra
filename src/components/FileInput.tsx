@@ -25,7 +25,7 @@ export default function FileInput({ updateFile }: Props) {
       onDragLeave={handleDrag}
       onDrop={handleDrop}
       className={clsx(
-        'flex items-center gap-4 flex-col border-[1px] p-10 rounded-3xl border-dashed',
+        'flex items-center gap-4 flex-col border-[1px] p-8 md:p-10 rounded-3xl border-dashed',
         dragActive ? 'border-white' : 'border-[#575757]'
       )}
     >
@@ -46,7 +46,9 @@ export default function FileInput({ updateFile }: Props) {
       >
         ADD
       </motion.button>
-      <p className="text-sm">or drag and drop your audio file here</p>
+      <p className="text-sm text-center md:text-left">
+        or drag and drop your audio file here
+      </p>
     </div>
   );
 }
