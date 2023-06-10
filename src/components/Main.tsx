@@ -117,7 +117,14 @@ function Main({ data }: { data: EventProps[] }) {
               'top-[calc(var(--header-height)+4rem)] translate-y-0 max-h-[calc(100vh-var(--header-height)-10rem)]'
           )}
         >
-          <div className="border-[1px] border-[#9F9F9F] rounded-[2.5rem] p-8 w-full space-y-6 text-lg">
+          <div
+            className={clsx(
+              'border-[1px] border-[#9F9F9F] w-full space-y-6 md:text-lg',
+              showSelected
+                ? 'rounded-[2rem] p-8'
+                : 'rounded-[2rem] p-6 md:p-8 md:rounded-[2.5rem]'
+            )}
+          >
             <Shows update={updateSelected} events={data} />
             {showSelected && (
               <RadioShow id={selected.id!} submit={submit} />
