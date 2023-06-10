@@ -41,7 +41,7 @@ export default function RadioShow({ id, submit }: Props) {
   const artist = event?.summary;
 
   return (
-    <div className="space-y-10 grid grid-rows-[min-content_1fr] text-base">
+    <div className="space-y-8 md:space-y-10 grid grid-rows-[min-content_1fr] text-base">
       <div className="space-y-2 font-light">
         <p>Your show is on:</p>
         <div className="font-semibold">
