@@ -19,6 +19,7 @@ export default function RadioShowForm({
   date,
   submit,
 }: Props) {
+  const [dirty, setDirty] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [form, setForm] = useState<StateProps>({
     title: '',
@@ -28,11 +29,15 @@ export default function RadioShowForm({
   const validate = useCallback(() => {
     const { file, title } = form;
     const errors: { [key: string]: string } = {};
+    if (!dirty) {
+      return errors;
+    }
     if (!file) {
       errors['file'] = 'File is required';
     }
     if (!title) {
-      errors['title'] = 'Title is required';
+      errors['title'] =
+        'Please add a title for your show or episode number eg. Ep.12';
     }
     // validate file type
     const allowedExtensions = /(\.mp3)$/i;
@@ -42,9 +47,10 @@ export default function RadioShowForm({
     }
     setErrors(errors);
     return errors;
-  }, [form]);
+  }, [form, dirty]);
 
   const updateFile = (file: File) => {
+    setDirty(true);
     setForm({ ...form, file });
   };
   const removeFile = () => setForm({ ...form, file: null });
@@ -58,7 +64,7 @@ export default function RadioShowForm({
     e.preventDefault();
 
     const errors = validate();
-    if (Object.keys(errors).length) {
+    if (Object.keys(errors).length || !dirty) {
       return;
     }
 
@@ -79,9 +85,10 @@ export default function RadioShowForm({
           <input
             name="name"
             value={form.title}
-            onChange={(e) =>
-              setForm({ ...form, title: e.target.value })
-            }
+            onChange={(e) => {
+              setDirty(true);
+              setForm({ ...form, title: e.target.value });
+            }}
             type="text"
             placeholder="Write your show title here"
             className="form-element"
