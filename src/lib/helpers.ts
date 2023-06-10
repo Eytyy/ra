@@ -53,16 +53,16 @@ export const getDateStamp = (date: string) => {
 
 export const getFilePath = (fileName: string, date: string) => {
   const formattedDate = new Date(date);
-  const monthFull = formattedDate.toLocaleString('default', {
-    month: 'long',
+  const month = formattedDate.toLocaleString('default', {
+    month: 'short',
   });
   const monthNumber = formattedDate.getMonth() + 1;
   const day = formattedDate.getDate().toString().padStart(2, '0');
+  const year = formattedDate.getFullYear();
 
   const dateStamp = getDateStamp(date);
-  // /year/month monthFull/day/dateStamp_fileName
-  const path = `/${formattedDate.getFullYear()}/${monthNumber} ${monthFull}/${day}/${dateStamp}_${fileName}`;
-
+  // Radio Alhara HD/Year/6 jun 2023/06092023/20230609_showname as it was uplaoded.mp3
+  const path = `/Radio Alhara HD/${formattedDate.getFullYear()}/${monthNumber} ${month} ${year}/${dateStamp}/${dateStamp}_${fileName}`;
   return path;
 };
 

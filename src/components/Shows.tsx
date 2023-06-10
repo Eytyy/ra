@@ -101,6 +101,12 @@ export default function Shows({ update, events }: Props) {
     return formattedDate;
   };
 
+  // crop selected text to fit in button
+  const selectedText =
+    selected?.summary && selected.summary.length > 20
+      ? `${selected.summary.slice(0, 20)}...`
+      : selected?.summary;
+
   return (
     <div
       className={clsx(
@@ -116,10 +122,10 @@ export default function Shows({ update, events }: Props) {
       >
         <motion.button
           onClick={toggle}
-          className="form-element text-xl flex justify-between gap-2 items-center"
+          className="form-element  flex justify-between gap-2 items-center"
         >
           {selected ? (
-            <span className="uppercase w-full">{`${selected.summary}`}</span>
+            <span className="uppercase w-full">{`${selectedText}`}</span>
           ) : (
             <span className="text-gray-400">SELECT RADIO SHOW</span>
           )}
@@ -139,7 +145,7 @@ export default function Shows({ update, events }: Props) {
         <div className="space-y-8 mt-4">
           {Object.entries(resultsByDate).map(([date, events]) => (
             <div key={date} className="space-y-2">
-              <h3 className="text-xl text-gray-400">
+              <h3 className="text-gray-400">
                 {formatGroupDate(date)}
               </h3>
               <div className="space-y-4">

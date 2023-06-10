@@ -148,6 +148,9 @@ export function CompletionView({
       {type === 'success' && (
         <div className="text-center space-y-4">
           <div className="text-9xl">🕺🏻</div>
+          <div className="text-sm">
+            Your show was uploaded successfully
+          </div>
         </div>
       )}
     </motion.div>

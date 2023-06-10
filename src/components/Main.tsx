@@ -117,7 +117,7 @@ function Main({ data }: { data: EventProps[] }) {
               'top-[calc(var(--header-height)+4rem)] translate-y-0 max-h-[calc(100vh-var(--header-height)-10rem)]'
           )}
         >
-          <div className="border-[1px] border-[#9F9F9F] rounded-[2.5rem] p-8 w-full space-y-6">
+          <div className="border-[1px] border-[#9F9F9F] rounded-[2.5rem] p-8 w-full space-y-6 text-lg">
             <Shows update={updateSelected} events={data} />
             {showSelected && (
               <RadioShow id={selected.id!} submit={submit} />

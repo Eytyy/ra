@@ -1,8 +1,7 @@
-import { useState } from 'react';
-import FileUpload from './FileUpload';
+import { useCallback, useEffect, useState } from 'react';
 import { formatSize } from '../lib/helpers';
-import { calendar_v3 } from 'googleapis';
 import { motion } from 'framer-motion';
+import FileInput from './FileInput';
 
 type StateProps = {
   title: string;
@@ -10,44 +9,66 @@ type StateProps = {
 };
 
 type Props = {
-  event: calendar_v3.Schema$Event;
-  artist?: string | null;
+  date: string;
+  artist: string;
   submit: (formData: FormData) => void;
 };
 
 export default function RadioShowForm({
   artist,
-  event,
+  date,
   submit,
 }: Props) {
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [form, setForm] = useState<StateProps>({
     title: '',
     file: null,
   });
 
-  const updateFile = (file: File) => setForm({ ...form, file });
+  const validate = useCallback(() => {
+    const { file, title } = form;
+    const errors: { [key: string]: string } = {};
+    if (!file) {
+      errors['file'] = 'File is required';
+    }
+    if (!title) {
+      errors['title'] = 'Title is required';
+    }
+    // validate file type
+    const allowedExtensions = /(\.mp3)$/i;
+    if (file && !allowedExtensions.exec(file.name)) {
+      errors['file'] =
+        'Invalid file type, only mp3 files are allowed';
+    }
+    setErrors(errors);
+    return errors;
+  }, [form]);
+
+  const updateFile = (file: File) => {
+    setForm({ ...form, file });
+  };
   const removeFile = () => setForm({ ...form, file: null });
+
+  useEffect(() => {
+    validate();
+  }, [form, validate]);
 
   // Append form data and upload to server
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (
-      !form.file ||
-      !event.start?.dateTime ||
-      !form.title ||
-      !artist
-    ) {
-      return void 0;
+
+    const errors = validate(form.file, form.title);
+    if (Object.keys(errors).length) {
+      return;
     }
 
     const formData = new FormData();
-    formData.append('file', form.file);
+    formData.append('file', form.file!);
     formData.append('title', form.title);
     formData.append('artist', artist);
-    formData.append('date', event.start.dateTime);
+    formData.append('date', date);
     submit(formData);
   }
-
   return (
     <form
       className="gap-8 grid grid-rows[auto_min-content]"
@@ -65,25 +86,35 @@ export default function RadioShowForm({
             placeholder="Write your show title here"
             className="form-element"
           />
+          {errors.title && (
+            <p className="text-red-500 text-xs mt-1">
+              {errors.title}
+            </p>
+          )}
         </div>
-        {form.file ? (
-          <div className="flex items-center justify-between gap-6 bg-[#111010] py-3 px-6 rounded-full">
-            <div className="text-white space-x-2 text-sm">
-              <span>{form.file.name}</span>
-              <span className="text-xs">
-                {formatSize(form.file.size)}
-              </span>
+        <div>
+          {form.file ? (
+            <div className="flex items-center justify-between gap-6 bg-[#111010] py-3 px-6 rounded-full">
+              <div className="text-white space-x-2 text-sm">
+                <span>{form.file.name}</span>
+                <span className="text-xs">
+                  {formatSize(form.file.size)}
+                </span>
+              </div>
+              <button
+                onClick={removeFile}
+                className="text-white text-sm underline"
+              >
+                remove
+              </button>
             </div>
-            <button
-              onClick={removeFile}
-              className="text-white text-sm underline"
-            >
-              remove
-            </button>
-          </div>
-        ) : (
-          <FileUpload updateFile={updateFile} />
-        )}
+          ) : (
+            <FileInput updateFile={updateFile} />
+          )}
+          {errors.file && (
+            <p className="text-red-500 text-xs mt-1">{errors.file}</p>
+          )}
+        </div>
       </div>
       <div>
         <motion.button

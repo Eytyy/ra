@@ -37,8 +37,11 @@ export default function RadioShow({ id, submit }: Props) {
     return <ShowLoadingSkeleton />;
   }
 
+  const date = event?.start?.dateTime;
+  const artist = event?.summary;
+
   return (
-    <div className="space-y-10 grid grid-rows-[min-content_1fr]">
+    <div className="space-y-10 grid grid-rows-[min-content_1fr] text-base">
       <div className="space-y-2 font-light">
         <p>Your show is on:</p>
         <div className="font-semibold">
@@ -50,11 +53,9 @@ export default function RadioShow({ id, submit }: Props) {
         </div>
         <AddToCalendar {...event} />
       </div>
-      <RadioShowForm
-        event={event}
-        artist={event?.summary}
-        submit={submit}
-      />
+      {artist && date && (
+        <RadioShowForm date={date} artist={artist} submit={submit} />
+      )}
     </div>
   );
 }
