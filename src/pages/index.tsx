@@ -25,7 +25,7 @@ export default function Home({ events }: { events: CalendarEvents }) {
       <Head>
         <title>RA</title>
       </Head>
-      <div className="min-h-screen md:h-screen items-center gap-14 md:p-16 p-8">
+      <div className="min-h-[var(--app-height)] md:h-[var(--app-height)] items-center gap-14 md:p-16 p-8">
         <Header />
         <Main data={events.items} />
       </div>

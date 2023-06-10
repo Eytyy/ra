@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type { calendar_v3 } from 'googleapis';
 import Shows from './Shows';
 import RadioShow from './RadioShow';
@@ -9,10 +9,7 @@ import uploadToDropbox from '@/lib/dropbox';
 import { useLayout } from '@/context/layout';
 import { updateTags } from '@/lib/utils';
 import { getFilePath } from '@/lib/helpers';
-import UploadProgress, {
-  CompletionView,
-  InitialView,
-} from './UploadProgress';
+import UploadProgress from './UploadProgress';
 import { AnimatePresence, motion } from 'framer-motion';
 
 type EventsResponse = {
@@ -28,6 +25,19 @@ function Main({ data }: { data: EventProps[] }) {
   const [progressAnimating, setProgressAnimating] = useState(false);
   const [selected, setSelected] = useState<EventProps | null>(null);
   const { isListOpen } = useLayout();
+
+  // set app height var
+  useEffect(() => {
+    const setHeight = () => {
+      document.documentElement.style.setProperty(
+        '--app-height',
+        `${window.innerHeight}px`
+      );
+    };
+    if (window) {
+      setHeight();
+    }
+  }, []);
 
   const updateSelected = useCallback((event: EventProps) => {
     setSelected(event);
@@ -112,9 +122,9 @@ function Main({ data }: { data: EventProps[] }) {
         <div
           className={clsx(
             'flex justify-center w-full max-w-md',
-            isListOpen && 'max-h-[calc(100vh-8rem)]',
+            isListOpen && 'max-h-[calc(var(--app-height)-8rem)]',
             placeBelowHeader
-              ? 'relative pt-8 md:pt-0 md:fixed md:top-[calc(var(--header-height)+8rem)] md:left-1/2 md:-translate-x-1/2 md:max-h-[calc(100vh-var(--header-height)-10rem)]'
+              ? 'relative pt-8 md:pt-0 md:fixed md:top-[calc(var(--header-height)+8rem)] md:left-1/2 md:-translate-x-1/2 md:max-h-[calc(var(--app-height)-var(--header-height)-10rem)]'
               : 'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-6'
           )}
         >
