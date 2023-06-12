@@ -53,7 +53,7 @@ export const getDateStamp = (date: string) => {
 
 export const getFilePath = (fileName: string, date: string) => {
   const formattedDate = new Date(date);
-  const month = formattedDate.toLocaleString('default', {
+  const month = formattedDate.toLocaleString('en-US', {
     month: 'short',
   });
   const monthNumber = formattedDate.getMonth() + 1;
