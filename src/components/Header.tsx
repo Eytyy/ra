@@ -19,7 +19,7 @@ export default function Header() {
   return (
     <header
       ref={measuredHeader}
-      className="flex flex-col items-center justify-center text-center gap-2 md:gap-4 md:fixed md:max-w-lg md:top-16 md:left-1/2 md:mx-auto md:-translate-x-1/2"
+      className="flex flex-col mx-auto items-center justify-center text-center gap-2 md:gap-4 md:max-w-lg pb-8 md:pb-16"
     >
       <Logo />
       <div className="hidden md:block">

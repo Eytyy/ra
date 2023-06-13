@@ -122,9 +122,10 @@ function Main({ data }: { data: EventProps[] }) {
         <div
           className={clsx(
             'flex justify-center w-full max-w-md',
-            isListOpen && 'max-h-[calc(var(--app-height)-8rem)]',
+            isListOpen &&
+              'h-[calc(var(--app-height)-var(--header-height)-8rem)] overflow-y-scroll',
             placeBelowHeader
-              ? 'relative pt-8 md:pt-0 md:fixed md:top-[calc(var(--header-height)+8rem)] md:left-1/2 md:-translate-x-1/2 md:max-h-[calc(var(--app-height)-var(--header-height)-10rem)]'
+              ? 'relative mx-auto'
               : 'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-6'
           )}
         >
