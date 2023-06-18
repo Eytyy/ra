@@ -61,10 +61,11 @@ export const getDatesForPath = (date: string) => {
 
   // if hour is between 00:00 and 04:00, then the date is the previous day
   const isPreviousDay = hour >= 0 && hour <= 4;
+  const isFirstDayOfMonth = d.getDate() === 1;
+
   // if isPreviousDay is true, then the day is the previous day
   // if the day is the first of the month, then the day is the last day of the previous month and
   // the month is the previous month
-  const isFirstDayOfMonth = d.getDate() === 1;
   if (isPreviousDay) {
     day = d.getDate() - 1;
   }
@@ -100,9 +101,7 @@ export const getFilePath = (fileName: string, date: string) => {
   const month = getMonthName(monthIdx);
 
   // Radio Alhara HD/Year/6 jun 2023/06092023/20230609_showname as it was uplaoded.mp3
-  const path = `/Radio Alhara HD/${year}/${
-    monthIdx + 1
-  } ${month} ${year}/${stamp}/${stamp}_${fileName}`;
+  const path = `/Radio Alhara HD/${year}/${monthIdx} ${month} ${year}/${stamp}/${stamp}_${fileName}`;
   return path;
 };
 
