@@ -5,12 +5,28 @@ import type { calendar_v3 } from 'googleapis';
 
 import Arrow from './arrow';
 import { useLayout } from '@/context/layout';
+import { formatDate } from '@/lib/helpers';
 
 type CalendarEvent = calendar_v3.Schema$Event;
 
 type Props = {
   update: (event: CalendarEvent) => void;
   events: CalendarEvent[];
+};
+
+const dateFormatter = (date: Date) => {
+  return new Intl.DateTimeFormat('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: '2-digit',
+    timeZone: 'Asia/Hebron',
+  }).format(date);
+};
+
+const formatGroupDate = (date: string) => {
+  const d = new Date(date);
+  const formattedDate = dateFormatter(d);
+  return formattedDate;
 };
 
 export default function Shows({ update, events }: Props) {
@@ -88,18 +104,6 @@ export default function Shows({ update, events }: Props) {
     toggle();
     setValue('');
   }
-
-  const formatGroupDate = (date: string) => {
-    const formattedDate = new Date(date).toLocaleDateString(
-      'default',
-      {
-        weekday: 'long',
-        month: 'long',
-        day: '2-digit',
-      }
-    );
-    return formattedDate;
-  };
 
   // crop selected text to fit in button
   const selectedText =
