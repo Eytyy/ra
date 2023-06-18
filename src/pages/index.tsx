@@ -43,7 +43,7 @@ export const getStaticProps = async () => {
       },
     };
   }
-  const now = DateTime.utc();
+  const now = DateTime.local().setZone('Asia/Hebron');
   const timeMin = now.toISO();
   const timeMax = now.plus({ months: 1 }).toISO();
 
