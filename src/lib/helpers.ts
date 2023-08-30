@@ -67,11 +67,10 @@ export const getDatesForPath = (date: string) => {
   // if the day is the first of the month, then the day is the last day of the previous month and
   // the month is the previous month
   if (isPreviousDay) {
-    day = d.getDate() - 1;
-  }
-  if (isFirstDayOfMonth) {
-    month = d.getMonth();
-    day = new Date(d.getFullYear(), d.getMonth(), 0).getDate();
+    day = isFirstDayOfMonth
+      ? new Date(d.getFullYear(), d.getMonth(), 0).getDate()
+      : d.getDate() - 1;
+    month = isFirstDayOfMonth ? d.getMonth() : month;
   }
 
   const stamp =
@@ -98,7 +97,13 @@ const getMonthName = (monthIdx: number) => {
 
 export const getFilePath = (fileName: string, date: string) => {
   const { stamp, monthIdx, year } = getDatesForPath(date);
+  console.log(`date: ${date}`);
+
   const month = getMonthName(monthIdx);
+
+  console.log(
+    `stamp: ${stamp}, monthIdx: ${monthIdx}, year: ${year}, month: ${month}`
+  );
 
   // Radio Alhara HD/Year/6 jun 2023/06092023/20230609_showname as it was uplaoded.mp3
   const path = `/Radio Alhara HD/${year}/${monthIdx} ${month} ${year}/${stamp}/${stamp}_${fileName}`;
