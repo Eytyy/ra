@@ -33,7 +33,7 @@ export default function Home({ events }: { events: CalendarEvents }) {
   );
 }
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
   const calendarId = process.env.NEXT_PUBLIC_GOOGLE_CALENDAR_ID;
 
   if (!calendarId) {
@@ -72,6 +72,5 @@ export const getStaticProps = async () => {
     props: {
       events,
     },
-    revalidate: 60 * 60 * 8,
   };
 };
